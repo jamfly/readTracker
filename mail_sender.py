@@ -97,7 +97,7 @@ class MailSender:
         message['from'] = sender
         message['subject'] = subject
 
-        msg = MIMEText(body)
+        msg = MIMEText(message_text)
         message.attach(msg)
         content_type, encoding = mimetypes.guess_type(file)
 
