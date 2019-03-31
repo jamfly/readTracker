@@ -102,3 +102,9 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+#api stuff
+credentials.json
+
+#mac
+.DS_Store
