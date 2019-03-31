@@ -55,8 +55,9 @@ class MailSender:
         Returns:
         An object containing a base64url encoded email object.
         """
-
-        message = MIMEText(message_text)
+        body = '<p>' + message_text + \
+            '<img src="http://1x1px.me/FFFFFF-0.png"/></p>'
+        message = MIMEText(body, 'html')
         message['to'] = to
         message['from'] = sender
         message['subject'] = subject
@@ -81,9 +82,10 @@ class MailSender:
         message['from'] = sender
         message['subject'] = subject
 
-        msg = MIMEText(message_text)
+        body = '<p>' + message_text + \
+            '<img src="http://1x1px.me/FFFFFF-0.png"/></p>'
+        msg = MIMEText(body, 'html')
         message.attach(msg)
-
         content_type, encoding = mimetypes.guess_type(file)
 
         if content_type is None or encoding is not None:
