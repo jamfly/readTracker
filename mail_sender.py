@@ -55,13 +55,28 @@ class MailSender:
         Returns:
         An object containing a base64url encoded email object.
         """
-        body = '<p>' + message_text + \
-            '<img src="http://1x1px.me/FFFFFF-0.png"/></p>'
-        message = MIMEText(body, 'html')
-        message['to'] = to
-        message['from'] = sender
-        message['subject'] = subject
-        return {'raw': urlsafe_b64encode(message.as_bytes()).decode()}
+        fp = open('test_image.jpg', 'rb')
+        image_data = fp.read()
+
+        html_part = MIMEMultipart()
+
+        body_text = '<p>' + message_text + \
+            '<img src="cid:myimage"/></p>'
+        body = MIMEText(body_text, 'html')
+        html_part.attach(body)
+
+        image = MIMEImage(image_data, 'jpeg')
+        image.add_header('Content-Id', '<myimage>')
+        image.add_header("Content-Disposition", "inline", filename="myimage")
+        html_part.attach(image)
+
+        html_part['to'] = to
+        html_part['from'] = sender
+        html_part['subject'] = subject
+
+        fp.close()
+
+        return {'raw': urlsafe_b64encode(html_part.as_bytes()).decode()}
 
     def create_message_with_attachment(
             self, sender, to, subject, message_text, file):
@@ -82,9 +97,7 @@ class MailSender:
         message['from'] = sender
         message['subject'] = subject
 
-        body = '<p>' + message_text + \
-            '<img src="http://1x1px.me/FFFFFF-0.png"/></p>'
-        msg = MIMEText(body, 'html')
+        msg = MIMEText(body)
         message.attach(msg)
         content_type, encoding = mimetypes.guess_type(file)
 
@@ -148,4 +161,4 @@ if __name__ == '__main__':
         sender=myMailAddress, to=reciverAddress, subject='attatch yo~~~',
         message_text='hahaha', file=filePath)
 
-    mailSender.send_message(user_id='me', message=attactedMessage)
+    mailSender.send_message(user_id='me', message=message)
