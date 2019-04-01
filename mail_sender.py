@@ -12,13 +12,14 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from base64 import urlsafe_b64encode
 from apiclient import errors
-
-SCOPES = ['https://mail.google.com/']
+from app import insert_name, generate_token
 
 
 class MailSender:
     def __init__(self):
         creds = None
+        token = None
+        self.SCOPES = ['https://mail.google.com/']
         # The file token.pickle stores the user's access and refresh tokens
         # and is created automatically when the authorization flow completes
         # for the first time.
@@ -31,7 +32,7 @@ class MailSender:
                 creds.refresh(Request())
             else:
                 flow = InstalledAppFlow.from_client_secrets_file(
-                    'credentials.json', SCOPES)
+                    'credentials.json', self.SCOPES)
                 creds = flow.run_local_server()
             # Save the credentials for the next run
             with open('token.pickle', 'wb') as token:
@@ -55,26 +56,18 @@ class MailSender:
         Returns:
         An object containing a base64url encoded email object.
         """
-        fp = open('test_image.jpg', 'rb')
-        image_data = fp.read()
-
-        html_part = MIMEMultipart()
-
-        body_text = '<p>' + message_text + \
-            '<img src="cid:myimage"/></p>'
-        body = MIMEText(body_text, 'html')
-        html_part.attach(body)
-
-        image = MIMEImage(image_data, 'jpeg')
-        image.add_header('Content-Id', '<myimage>')
-        image.add_header("Content-Disposition", "inline", filename="myimage")
-        html_part.attach(image)
-
+        self.token = generate_token(name=to)
+        body = '<p>' + message_text +\
+            '<img style="display:none"' +\
+            'src = "http://localhost:5000/trace?token=' + \
+            self.token + '"/ ></p >'
+        print(body)
+        html_part = MIMEText(body, 'html')
         html_part['to'] = to
         html_part['from'] = sender
         html_part['subject'] = subject
 
-        fp.close()
+        insert_name(name=to, token=self.token)
 
         return {'raw': urlsafe_b64encode(html_part.as_bytes()).decode()}
 

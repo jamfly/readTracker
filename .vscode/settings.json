@@ -1,6 +1,6 @@
 {
   "python.formatting.provider": "autopep8",
-  "python.pythonPath": "/Users/Freddy/.local/share/virtualenvs/trace-mail-10TUghw9/bin/python",
+  "python.pythonPath": "/Users/Freddy/.local/share/virtualenvs/readTracker-0LrMlAsr/bin/python",
   "python.linting.flake8Enabled": true,
   "python.linting.pylintEnabled": false,
   "python.linting.enabled": true
