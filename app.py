@@ -5,9 +5,9 @@ from pymongo import MongoClient
 from flask import Flask, request, Response, send_file
 from PIL import Image
 
-
 app = Flask(__name__)
-mongoClient = MongoClient('localhost')
+app.secret_key = 'secret'
+mongoClient = MongoClient('mongodb://Freddy:admin@35.185.142.32:27017/')
 db = mongoClient['mail_database']
 collection = db['mail_collection']
 

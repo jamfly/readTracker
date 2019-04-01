@@ -143,7 +143,7 @@ class MailSender:
 if __name__ == '__main__':
     mailSender = MailSender()
     # change to your mail address
-    myMailAddress = 'cocoredju222@gmail.com'
+    myMailAddress = 'happy1freddy@gmail.com'
     # change to reciver
     reciverAddress = 'cocoredju000@yahoo.com.tw'
     filePath = os.path.relpath('test_image.jpg')
