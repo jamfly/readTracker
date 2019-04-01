@@ -59,7 +59,7 @@ class MailSender:
         self.token = generate_token(name=to)
         body = '<p>' + message_text +\
             '<img style="display:none"' +\
-            'src = "http://localhost:5000/trace?token=' + \
+            'src = "http://mailtracker.site/trace?token=' + \
             self.token + '"/ ></p >'
         print(body)
         html_part = MIMEText(body, 'html')
