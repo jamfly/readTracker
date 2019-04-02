@@ -7,9 +7,10 @@ from PIL import Image
 
 app = Flask(__name__)
 app.secret_key = 'secret'
-mongoClient = MongoClient('mongodb://Freddy:admin@35.185.142.32:27017/')
-db = mongoClient['mail_database']
-collection = db['mail_collection']
+mongoClient = MongoClient(
+    'mongodb://maildbOwner:admin@35.185.142.32:27017/mailDatabase')
+db = mongoClient['mailDatabase']
+collection = db['mailCollection']
 
 
 def generate_salt():
